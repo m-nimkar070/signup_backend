@@ -56,10 +56,14 @@ const Signup = () => {
   };
 
   const createUserApiCall = async (url) => {
-    console.log("api",{...formData})
+    console.log("api", { ...formData });
     try {
-      const response = await axios.post(`${url}/auth/register`, formData);
-      console.log("res Data",response.data);
+      const response = await axios.post(`${url}auth/register`, formData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("res Data", response.data);
       alert("User created successfully!");
     } catch (error) {
       console.error("Error creating user:", error);
@@ -67,10 +71,10 @@ const Signup = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      createUserApiCall(url);
+      await createUserApiCall(url);
       alert("Form submitted successfully!");
     }
   };
