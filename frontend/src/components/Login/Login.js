@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useUrl } from "../../components/Context/urlContext";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -6,7 +9,9 @@ const Login = () => {
     password: "",
   });
 
+  const { url } = useUrl();
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,30 +22,39 @@ const Login = () => {
     let errors = {};
 
     if (!/^[A-Za-z][A-Za-z0-9]*$/.test(formData.username)) {
-      errors.username =
-        "Username should start with an alphabet and contain only alphanumeric characters";
+      errors.username ="Username should start with an alphabet and contain only alphanumeric characters";
     } else if (!/\d/.test(formData.username)) {
       errors.username = "Username should contain at least one number";
     }
 
-    if (
-      !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,10}$/.test(
-        formData.password
-      )
-    ) {
-      errors.password =
-        "Password should be 7-10 characters long and contain letters and numbers and special characters";
+    if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{7,10}$/.test(formData.password)) {
+      errors.password ="Password should be 7-10 characters long and contain letters and numbers and special characters";
     }
 
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
+  const performLogin = async(url)=>{
+    try {
+      const response = await axios.post(`${url}v1/auth/login`, formData,{
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        withCredentials: true, // Make sure credentials are included if needed
+      });
+      console.log(response.data);
+      navigate('/', { state: { username: formData.username } });
+    } catch (error) {
+      console.error('Error logging in:', error);
+      setErrors({ login: 'Invalid username or password' });
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log(formData);
-      alert("Logged in successfully!");
+      performLogin(url);
     }
   };
 

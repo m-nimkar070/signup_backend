@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState  } from "react";
 import { useUrl } from "../../components/Context/urlContext";
+import { useNavigate } from 'react-router-dom';
+
 import axios from "axios";
 
 const Signup = () => {
@@ -12,8 +14,8 @@ const Signup = () => {
   });
 
   const { url } = useUrl();
-
   const [errors, setErrors] = useState({});
+  const nevigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -75,7 +77,7 @@ const Signup = () => {
     e.preventDefault();
     if (validate()) {
       await createUserApiCall(url);
-      alert("Form submitted successfully!");
+      nevigate('/',{ state: { username: formData.username } });
     }
   };
 
