@@ -1,8 +1,8 @@
 // src/Signup.js
 
 import React, { useState } from "react";
-import { useUrl } from "../../components/Context/urlContext"
-import axios from 'axios';
+import { useUrl } from "../../components/Context/urlContext";
+import axios from "axios";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -57,11 +57,18 @@ const Signup = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const createUserApiCall=async (url)=>{
-    const user =await axios.post(`${url}auth/register`,{...formData});
-    console.log(user);
-  }
-
+  const createUserApiCall = async (url) => {
+    try {
+      const response = await axios.post(`${url}/auth/register`, {
+        ...formData,
+      });
+      console.log(response.data);
+      alert("User created successfully!");
+    } catch (error) {
+      console.error("Error creating user:", error);
+      alert("Failed to create user.");
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -100,7 +107,7 @@ const Signup = () => {
           type="text"
           name="mobNumber"
           value={formData.mobNumber}
-          maxLength='10'
+          maxLength="10"
           onChange={handleChange}
         />
         {errors.mobNumber && <p>{errors.mobNumber}</p>}

@@ -9,26 +9,27 @@ const passport = require("passport");
 
 const app = express();
 
-
 // parse json request body
 app.use(express.json());
 
 // parse urlencoded request body
 app.use(express.urlencoded({ extended: true }));
 
+const corsOptions = {
+  origin: "*",
+  optionsSuccessStatus: 200,
+};
 
-
-app.use(cors("*"));
-app.options("*", cors());
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use(passport.initialize());
-passport.use("jwt",jwtStrategy)
-
+passport.use("jwt", jwtStrategy);
 
 app.use("/v1", routes);
 
 app.use((req, res, next) => {
-    next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
+  next(new ApiError(httpStatus.NOT_FOUND, "Not found"));
 });
 
 app.use(errorHandler);
