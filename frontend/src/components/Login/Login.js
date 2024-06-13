@@ -37,11 +37,10 @@ const Login = () => {
 
   const performLogin = async(url)=>{
     try {
-      const response = await axios.post(`${url}v1/auth/login`, formData,{
+      const response = await axios.post(`${url}v1/auth/login`, {...formData},{
         headers: {
           'Content-Type': 'application/json',
         },
-        withCredentials: true, // Make sure credentials are included if needed
       });
       console.log(response.data);
       navigate('/', { state: { username: formData.username } });

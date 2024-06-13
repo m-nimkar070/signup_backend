@@ -9,16 +9,16 @@ const passport = require("passport");
 
 const app = express();
 //Cors Policy
-const corsOptions = {
-  origin: "*", // Allow all origins
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  optionsSuccessStatus: 204,
-  credentials: true,
-};
+// const corsOptions = {
+//   origin: "*", // Allow all origins
+//   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//   allowedHeaders: ["Content-Type", "Authorization"],
+//   optionsSuccessStatus: 204,
+//   credentials: true,
+// };
 
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+app.use(cors());
+// app.options("*", cors(corsOptions));
 // parse json request body
 app.use(express.json());
 
