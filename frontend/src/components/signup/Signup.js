@@ -1,5 +1,3 @@
-// src/Signup.js
-
 import React, { useState } from "react";
 import { useUrl } from "../../components/Context/urlContext";
 import axios from "axios";
@@ -58,11 +56,10 @@ const Signup = () => {
   };
 
   const createUserApiCall = async (url) => {
+    console.log("api",{...formData})
     try {
-      const response = await axios.post(`${url}/auth/register`, {
-        ...formData,
-      });
-      console.log(response.data);
+      const response = await axios.post(`${url}/auth/register`, formData);
+      console.log("res Data",response.data);
       alert("User created successfully!");
     } catch (error) {
       console.error("Error creating user:", error);
@@ -73,7 +70,6 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log(formData);
       createUserApiCall(url);
       alert("Form submitted successfully!");
     }
