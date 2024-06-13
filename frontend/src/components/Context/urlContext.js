@@ -3,7 +3,7 @@ import React, { createContext, useContext, useState } from 'react';
 const UrlContext = createContext();
 
 export const UrlProvider = ({ children }) => {
-  const [url, setUrl] = useState('http://signup-backend-ashen.vercel.app/v1/');
+  const [url, setUrl] = useState('https://signup-backend-ashen.vercel.app/');
 
   return (
     <UrlContext.Provider value={{ url, setUrl }}>
