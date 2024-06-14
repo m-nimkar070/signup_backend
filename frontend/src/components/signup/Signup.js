@@ -144,7 +144,7 @@ const Signup = () => {
             />
             {errors.password && <p>{errors.password}</p>}
           </div>
-          <button type="submit">Sign Up</button>
+          <button className="btn" type="submit">Sign Up</button>
         </form>
       </div>
     </>

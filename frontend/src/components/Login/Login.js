@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useUrl } from "../../components/Context/urlContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./login.css";
+import "../../style.css";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -92,7 +92,7 @@ const Login = () => {
           {errors.password && <p>{errors.password}</p>}
         </div>
         <div>
-          <button type="submit">login</button>
+          <button className="btn" type="submit">login</button>
         </div>
       </form>
     </div>
