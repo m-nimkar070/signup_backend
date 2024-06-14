@@ -1,7 +1,6 @@
-import React, { useState  } from "react";
+import React, { useState } from "react";
 import { useUrl } from "../../components/Context/urlContext";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Signup = () => {
@@ -60,13 +59,22 @@ const Signup = () => {
   const createUserApiCall = async (url) => {
     console.log("api", { ...formData });
     try {
-      const response = await axios.post(`${url}v1/auth/register`, {...formData}, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log("res Data", response.data);
-      alert("User created successfully!");
+      const response = await axios.post(
+        `${url}v1/auth/register`,
+        { ...formData },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if(response.data.code === 200){
+        alert("Username already taken !");
+      }else{
+        console.log("res Data", response.data);
+        alert("User created successfully!");
+        nevigate("/", { state: { username: formData.username } });
+      }
     } catch (error) {
       console.error("Error creating user:", error);
       alert("Failed to create user.");
@@ -77,66 +85,69 @@ const Signup = () => {
     e.preventDefault();
     if (validate()) {
       await createUserApiCall(url);
-      nevigate('/',{ state: { username: formData.username } });
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>First Name:</label>
-        <input
-          type="text"
-          name="firstName"
-          value={formData.firstName}
-          onChange={handleChange}
-        />
-        {errors.firstName && <p>{errors.firstName}</p>}
+    <>
+      <div className="container">
+        <form onSubmit={handleSubmit}>
+          <div className="input-feilds">
+            <label>First Name:</label>
+            <input
+              type="text"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+            />
+            {errors.firstName && <p>{errors.firstName}</p>}
+          </div>
+          <div className="input-feilds">
+            <label>Last Name:</label>
+            <input
+              type="text"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+            />
+            {errors.lastName && <p>{errors.lastName}</p>}
+          </div>
+          <div className="input-feilds">
+            <label>Mobile Number:</label>
+            <input
+              type="text"
+              name="mobNumber"
+              value={formData.mobNumber}
+              maxLength="10"
+              onChange={handleChange}
+            />
+            {errors.mobNumber && <p>{errors.mobNumber}</p>}
+          </div>
+          <div className="input-feilds">
+            <label>Username:</label>
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+            />
+            {errors.username && <p>{errors.username}</p>}
+          </div>
+          <div className="input-feilds">
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              title="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            {errors.password && <p>{errors.password}</p>}
+          </div>
+          <button type="submit">Sign Up</button>
+        </form>
       </div>
-      <div>
-        <label>Last Name:</label>
-        <input
-          type="text"
-          name="lastName"
-          value={formData.lastName}
-          onChange={handleChange}
-        />
-        {errors.lastName && <p>{errors.lastName}</p>}
-      </div>
-      <div>
-        <label>Mobile Number:</label>
-        <input
-          type="text"
-          name="mobNumber"
-          value={formData.mobNumber}
-          maxLength="10"
-          onChange={handleChange}
-        />
-        {errors.mobNumber && <p>{errors.mobNumber}</p>}
-      </div>
-      <div>
-        <label>Username:</label>
-        <input
-          type="text"
-          name="username"
-          value={formData.username}
-          onChange={handleChange}
-        />
-        {errors.username && <p>{errors.username}</p>}
-      </div>
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          title="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-        />
-        {errors.password && <p>{errors.password}</p>}
-      </div>
-      <button type="submit">Sign Up</button>
-    </form>
+    </>
   );
 };
 
